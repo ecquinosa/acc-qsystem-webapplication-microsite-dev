@@ -1,0 +1,383 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<link href="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+<!--Select 2-->
+<link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Datatable -->
+<link href="~/Content/datatables/datatables.css" rel="stylesheet" />
+<link href="~/Content/datepicker/datepicker.css" rel="stylesheet" />
+<style>
+
+    .control-label {
+        font-size: 14px;
+        font-weight: bold;
+        opacity: 0.7;
+    }
+
+    .borderAllcard {
+        border: 1px solid #E31B49;
+    }
+</style>
+
+<div class="right_col" role="main" style="overflow-x:hidden; display: none;" id="MainDiv">
+    <div style="width: 100%">
+
+        <div class="page-title">
+            <div class="title_left">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="row">
+
+                    <div class="col-md-2 col-sm-2 col-xs-2">
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-8">
+                        <div class="x_title" style="margin-top: 10px;">
+                        </div>
+                        <div class="card" style="border: none;">
+                            <div class="row no-gutters">
+                                <div class="card-body">
+                                    <div class="x_content">
+                                        <div class="row" style="text-align: center; margin-top: -10px; margin-bottom: 10px;">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <img src="~/Content/img/Q Beta Logo-01.png" height="150" />
+
+                                            </div>
+                                            @*<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: -20px; margin-bottom: 20px;">
+                                                    <div style=" font-weight: bold; color: #E31B49; font-size: 17px;">
+                                                        POWERED BY  <img src="~/Content/img/allcardtechlogo.png" height="30" />
+                                                    </div>
+                                                </div>*@
+
+                                        </div>
+                                        <div id="PageLoading" style="display: none;">
+                                            <div class="row" style="margin-top: 50px; margin-bottom: 50px;">
+
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                    <label class="loader"></label>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                    <span class="control-label" style="font-size: 30px; font-weight: bold; ">Loading, please wait.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="CustomerInformation" style="display: none; padding: 0px 10px 0px 10px; ">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6 col-xs-6" id="divider">
+
+                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label">Store: </span>
+                                                            <select class="form-control select2" id="InstitutionSelect" style="width: 100%"></select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label">Branch: </span>
+                                                            <select class="form-control select2" id="BranchSelect" style="width: 100%" disabled></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px;">
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label" for="txtScheduledDate">Scheduled Date: </span>
+                                                            <input type="text" class="form-control" style="background-color: white;" id="txtScheduledDate" disabled readonly />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-10 col-sm-10 col-xs-12">
+                                                            <button id="btnCheckSchedule" style="background-color: #E31B49; font-size: 13px; color: white; font-weight: bold;" class="btn" disabled><i class="fa fa-search"></i> CHECK SCHEDULE</button>
+                                                        </div>
+
+                                                    </div>
+                                                    <div id="ScheduleDivLoader" class="row" style="display: none;">
+                                                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right: -20px;">
+                                                            <label class="loaderSmall"></label>
+                                                        </div>
+                                                        @*<div class="col-md-10 col-sm-10 col-xs-10">
+                                                                <span style="font-size: 20px; font-weight: bold; opacity: 0.7;">Processing...</span>
+                                                            </div>*@
+                                                    </div>
+                                                    <div id="ScheduleDiv" style="display: none;">
+                                                        <div class="row" style="margin-bottom: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Schedule(s):<span style="color:#E31B49; font-style: italic;"> Note: <i class="fa fa-blind" style="font-weight: bold;"></i> Schedule for senior citizen.</span></span>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" id="AvailableSchedDiv" style="display: none;">
+
+                                                                @*<button id="AvailableSched_" style="background-color: #E31B49; font-size: 12px; color: white; font-weight: bold;" class="btn" disabled>NO AVAILABLE SCHEDULE AT THE MOMENT</button>*@
+                                                            </div>
+
+                                                        </div>
+                                                        <div id="AvailableSlotsDiv" style="display: none;">
+                                                            <div class="row" style="margin-bottom: 10px;">
+                                                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                                                    <span class="control-label">Available Slot(s): </span>
+                                                                </div>
+                                                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                                                    <button class="btn" style="font-size: 20px; padding: 5px; font-weight: bold; color: white; background-color: #E31B49; pointer-events: none;" disabled id="txtAvailableSlots">0</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                                    @*<div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label" style="font-weight: bold; ">Please fill out the following Information: </span>
+                                                            </div>
+
+                                                        </div>*@
+                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label">Name: </span>
+                                                            <input type="text" class="form-control" id="txtFullname" />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label">Birth Date: </span>
+                                                            <input type="text" class="form-control" style="background-color: white;" id="txtBirthDate" readonly />
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span class="control-label">Email: </span>
+                                                            <input type="text" class="form-control" id="txtEmail" />
+                                                        </div>
+                                                        <div style="display: none;" id="EmailDiv">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label" style="font-weight: bold;color: #E31B49;">Invalid Email address </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-12 col-sm-12  col-xs-12">
+                                                            <span class="control-label">Mobile #: </span>
+                                                            <input type="text" class="form-control" id="txtMobileNumber" maxlength="11" onkeyup="" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row" style="margin-bottom: 10px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 autocomplete perf" style="max-height: 300px; overflow-x: hidden;">
+                                                            <span class="control-label">City: </span>
+                                                            <input list="CityList" type="text" class="form-control perf" id="txtCityAddress" />
+
+                                                            <datalist id="CityList" style=" background-color: white;">
+                                                            </datalist>
+                                                        </div>
+                                                    </div>
+                                                    @*<div style="border: 1px solid #E31B49; margin: 20px 0px 20px 0px;"></div>*@
+
+                                                    @*<div class="row" style="margin-bottom: 10px; text-align: center;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <label class="loaderSmall"></label>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                 <span style="font-size: 20px; font-weight: bold; opacity: 0.7;">Processing...</span>
+                                                            </div>
+                                                        </div>*@
+
+                                                </div>
+
+                                            </div>
+                                            <div class="row" style="margin-bottom: 15px; margin-top: 15px;">
+
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                    <input type="checkbox" id="chkAgreement" style=" font-weight: bold; display: inline-block;" />
+
+                                                    <span class="control-label" style="font-weight: bold; opacity: 0.7; font-size: 15px;"> By continuing, you agree to the <a href="#!" id="TermsAndCondition" style="color: #E31B49; text-decoration: underline;">terms and conditions</a> and <a href="#!" id="PrivacyPolicy" style="color: #E31B49; text-decoration: underline;">privacy policy</a> of using this service. </span>
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row" style="margin-bottom: 10px;">
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                    <button id="btnReserveSlot" style="background-color: #E31B49; font-size: 13px; color: white; font-weight: bold;" class="btn" disabled><i class="fa fa-check"></i> RESERVE SLOT</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <div id="Confirmation" style="display: none; padding: 0px 10px 0px 10px;">
+                                                    <div class="row" style="margin-top: 50px; margin-bottom: 50px; text-align: center; display: none;" id="ConfirmationLoader">
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <label class="loader"></label>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            <span style="font-size: 30px; font-weight: bold; opacity: 0.7;">Processing your reservation...</span>
+                                                        </div>
+                                                    </div>
+                                                    <div style="display: none;" id="ConfirmationSuccess">
+                                                        <div class="row" style="margin-top: 20px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px; ">
+                                                                <span class="control-label" style="font-size: 20px;">Q-Code: </span>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                                <span class="control-label" style="font-size: 30px;" id="ReferenceCode"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px; ">
+                                                                <span class="control-label" style="font-size: 20px;">QR Code: </span>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                                <img height="250" id="QRCode" />
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        @*<div style="border: 1px solid #E31B49; margin: 0px 0px 20px 0px;"></div>*@
+                                                        <div class="row" style="text-align: center;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px; ">
+                                                                <span class="control-label" style="margin-left: 15px; font-size: 15px; text-decoration: underline;">Kindly save the QR and Reference code for your reference when visiting the store.</span>
+                                                                <br />
+                                                                <span class="control-label" style="        margin-left: 15px;
+        font-size: 18px;
+        color: #E31B49;
+">Thank you for using QSYSTEM.</span>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!---->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div style=" display: none; overflow-x: hidden;" id="OTPMainDIV">
+    <div class="right_col" role="main" style="overflow-x:hidden; margin-bottom: 100px;">
+        <div class="">
+
+            <div class="page-title">
+                <div class="title_left">
+
+                </div>
+            </div>
+            <div class="row" style="margin-left: 25px; margin-right: 25px;">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+
+                    <div class="x_panel">
+                        <div class="x_title" style="margin-top: 100px;">
+                            <h1 style="font-weight: bold; font-size: 50px; opacity: 0.7">Please enter the OTP that you received.</h1>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+
+            </div>
+            <div id="OTPDiv">
+                <div class="row" style="margin-left: 125px; margin-right: 125px;">
+                    <div class="col-md-3 col-sm-3 col-xs-3" style="text-align: center;">
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="text-align: center;">
+                        <input name="txtOTP" onkeyup="moveToNext(this, 'txtOTP_2')" type="text" class="form-control" id="txtOTP_1" maxlength="1" style="height: 75px; text-align: center; font-size: 50px;  opacity: 0.6; box-shadow: 0 0 10px #808080; border-radius: 10px;" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="text-align: center;">
+                        <input name="txtOTP" onkeyup="moveToNext(this, 'txtOTP_3')" type="text" class="form-control" id="txtOTP_2" maxlength="1" style="height: 75px; text-align: center; font-size: 50px;  opacity: 0.6; box-shadow: 0 0 10px #808080; border-radius: 10px;" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="text-align: center;">
+                        <input name="txtOTP" onkeyup="moveToNext(this, 'txtOTP_4')" type="text" class="form-control" id="txtOTP_3" maxlength="1" style="        height: 75px;
+        text-align: center;
+        font-size: 50px;
+        opacity: 0.6;
+        box-shadow: 0 0 10px #808080;
+        border-radius: 10px;" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="        text-align: center;
+">
+                        <input name="txtOTP" onkeyup="moveToNext(this, 'txtOTP_5')" type="text" class="form-control" id="txtOTP_4" maxlength="1" style="height: 75px; text-align: center; font-size: 50px;  opacity: 0.6; box-shadow: 0 0 10px #808080; border-radius: 10px;" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="text-align: center;">
+                        <input name="txtOTP" onkeyup="moveToNext(this, 'txtOTP_6')" type="text" class="form-control" id="txtOTP_5" maxlength="1" style="height: 75px; text-align: center; font-size: 50px;  opacity: 0.6; box-shadow: 0 0 10px #808080; border-radius: 10px;" />
+                    </div>
+                    <div class="col-md-1 col-sm-1 col-xs-1" style="text-align: center;">
+                        <input name="txtOTP" onkeyup="moveToNext(this, '')" type="text" class="form-control" id="txtOTP_6" maxlength="1" style="        height: 75px;
+        text-align: center;
+        font-size: 50px;
+        opacity: 0.6;
+        box-shadow: 0 0 10px #808080;
+        border-radius: 10px;" />
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                        <button id="btnSubmitOTP" style="background-color: #E31B49;font-size: 25px; color: white; font-weight: bold;" class="btn"> SUBMIT OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="border: 1px solid #E31B49; margin: 100px 25px 0px 25px;"></div>
+</div>
+
+<script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
+<script src="~/Content/vendors/moment/min/moment.min.js"></script>
+<script src="~/Content/sweetalert/sweetalert2.all.js"></script>
+<script src="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="~/Content/vendors/select2/dist/js/select2.full.min.js"></script>
+<script src="~/Content/autocomplete/autocomplete.js"></script>
+<script src="~/Content/datepicker/datepicker.js"></script>
+<script src="~/Scripts/Home/Index.js"></script>
+
+<script type="text/javascript">
+
+</script>

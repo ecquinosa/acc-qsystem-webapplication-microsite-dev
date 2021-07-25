@@ -1,0 +1,161 @@
+﻿
+<!DOCTYPE html>
+
+<html class="h-100">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="~/Content/bootstrap/css/bootstrap.css?id=1234" type="text/css" rel="stylesheet">
+
+    <style type="text/css">
+        
+        body, html {
+            /*font-family: Calibri;*/
+        }
+
+        .perf::-webkit-scrollbar {
+            width: 8px;
+            height: 5px;
+            background: none;
+            position: fixed;
+            opacity: 0.9
+        }
+
+        .perf::-webkit-scrollbar-thumb:vertical {
+            background: rgba(174, 172, 172, 0.85); /*#E31B49;*/
+            border-radius: 10px;
+        }
+
+        .perf::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .highlightInvalid {
+            border: 2px solid #E31B49;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #E31B49;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .loaderSmall {
+            border: 10px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 10px solid #E31B49;
+            width: 50px;
+            height: 50px;
+            -webkit-animation: spin 2s linear infinite; /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: end;
+            /*background-color: #E31B49*/
+        }
+
+        .header1 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: end;
+        }
+
+        .wrap {
+            min-height: 100%;
+            height: auto;
+            margin: 0 auto -60px;
+            padding: 0 0 60px;
+        }
+
+        .highlighted {
+            background-color: darkseagreen;
+        }
+
+        .autocomplete {
+            position: relative;
+        }
+
+        .autocomplete-items {
+            position: static;
+            border: 1px solid #E31B49;
+        }
+
+            .autocomplete-items div {
+                padding: 10px;
+                cursor: pointer;
+                background-color: #fff;
+                border-bottom: 1px solid #E31B49;
+            }
+
+                .autocomplete-items div:hover {
+                    background-color: #E31B49;
+                    color: white;
+                }
+
+        .autocomplete-active {
+            background-color: #E31B49 !important;
+            color: white;
+        }
+    </style>
+</head>
+
+
+<body class="perf">
+    @*<header class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 navbar-expand" >
+
+            <div class="collapse navbar-collapse" id="headerNavbarCollapse" style="background-color: #E31B49;">
+                <ul class="navbar-nav px-3 w-100 justify-content-end">
+                    <li class="nav-item text-nowrap" style="padding: 10px;">
+                        <a href="@Url.Action("Index", "Home")" style="color: white; text-decoration: underline;">
+                            HOME
+                        </a>
+                        <a href="http://www.allcard.com.ph/inquiry/index.php/main/allcardContactUs" style="color: white; text-decoration: underline;">
+                            CONTACT US
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </header>*@
+    @*<div class="header1" style="justify-content: start; display: none;">
+        <div style="font-weight: bold; color: #E31B49; font-size: 15px; opacity: 0.4; margin: 10px 25px 10px 25px;" class="pull-right">
+            <a href="@Url.Action("Index", "Home")" style="color: #E31B49; text-decoration: underline;">
+                HOME
+            </a>
+            <a href="http://www.allcard.com.ph/inquiry/index.php/main/allcardContactUs" style="color: #E31B49; text-decoration: underline;">
+                CONTACT US
+            </a>
+        </div>
+        <div style="        font-weight: bold;
+        color: #E31B49;
+        font-size: 15px;
+        opacity: 0.4;
+        margin: 10px 25px 10px 25px;" class="pull-right">
+
+
+
+        </div>
+    </div>*@
+    <br />
+    <div class="wrap">
+        @RenderBody()
+    </div>
+    <br />
+    <div class="footer" style="justify-content: start">
+
+    </div>
+</body>
+
+
+</html>
