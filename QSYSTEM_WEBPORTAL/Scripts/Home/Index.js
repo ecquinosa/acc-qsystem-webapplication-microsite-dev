@@ -261,9 +261,11 @@ $(document).ready(function () {
                 let result;
                 result = $.parseJSON(res);
                 if (result.resultCode == 200) {
-                    $("#PageLoading").fadeOut(200, function () {
-                        $("#CustomerInformation").fadeIn(1000);
-                        $("#AvailableSchedDiv").fadeIn(1000);
+                    $("#PageLoading").fadeOut(200, function () { 
+                        $("#ScheduleInformation").fadeIn(1000);
+                        $("#CustomerInformation").fadeOut(1000);
+                        $("#SummaryInformation").fadeOut(1000);
+                        $("#AvailableSchedDiv").fadeOut(1000);
                         document.getElementById("AvailableSchedDiv").innerHTML = "<button + " + buttonCheckSchedAttrib + "disabled>" + "NO AVAILABLE SLOTS AT THE MOMENT" + "</button>";
                     });
                     $('#chkAgreement').prop('checked', false);
@@ -323,9 +325,11 @@ $(document).ready(function () {
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.value) {
-                        $("#PageLoading").fadeOut(200, function () {
-                            $("#CustomerInformation").fadeIn(1000);
-                            $("#AvailableSchedDiv").fadeIn(1000);
+                        $("#PageLoading").fadeOut(200, function () {                 
+                            $("#ScheduleInformation").fadeIn(1000);
+                            $("#CustomerInformation").fadeOut(1000);
+                            $("#SummaryInformation").fadeOut(1000);
+                            $("#AvailableSchedDiv").fadeOut(1000);
                             document.getElementById("AvailableSchedDiv").innerHTML = "<button + " + buttonCheckSchedAttrib + "disabled>" + "NO AVAILABLE SLOTS AT THE MOMENT" + "</button>";
                         });
                         //$('#ConfirmationLoader').fadeOut(1000, function () {
@@ -827,6 +831,153 @@ $('#chkAgreement').on('click', function () {
     }
 });
 
+$('#btnSchedule_Next').on('click', function () {
+    if ($('#InstitutionSelect').select2('val') == 0 || $('#InstitutionSelect').select2('val') == null) {
+        $('#InstitutionSelect').data('select2').$container.addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#InstitutionSelect').data('select2').$container.removeClass('highlightInvalid');
+
+        }, 1000);
+        return false;
+    }
+    if ($('#BranchSelect').select2('val') == 0 || $('#BranchSelect').select2('val') == null) {
+        $('#BranchSelect').data('select2').$container.addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#BranchSelect').data('select2').$container.removeClass('highlightInvalid');
+
+        }, 1000);
+        return false;
+    }
+
+    $('#ScheduleInformation').fadeOut(500, function () {
+        $('#CustomerInformation').fadeIn(200);
+        $('#SummaryInformation').fadeOut(1000);
+        $('#ScheduleDivLoader').fadeOut(1000);
+
+        return true;
+    });
+});
+
+$('#btnCustomer_Back').on('click', function () {
+    $('#CustomerInformation').fadeOut(500, function () {
+        $('#ScheduleInformation').fadeIn(200);
+        $('#SummaryInformation').fadeOut(1000);
+        $('#ScheduleDivLoader').fadeOut(1000);
+
+        return true;
+    });
+});
+
+$('#btnSummary_Back').on('click', function () {
+    $('#SummaryInformation').fadeOut(500, function () {
+        $('#CustomerInformation').fadeIn(200);
+        $('#ScheduleInformation').fadeOut(1000);
+        $('#ScheduleDivLoader').fadeOut(1000);
+
+        return true;
+    });
+});
+
+
+
+$('#btnCustomer_Next').on('click', function () {
+    if ($('#txtCCANo').val() == null || $('#txtCCANo').val() == '' || $('#txtCCANo').val() == undefined) {
+        $('#txtCCANo').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtCCANo').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
+    if ($('#txtFirstName').val() == null || $('#txtFirstName').val() == '' || $('#txtFirstName').val() == undefined) {
+        $('#txtFirstName').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtFirstName').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
+    if ($('#txtLastName').val() == null || $('#txtLastName').val() == '' || $('#txtLastName').val() == undefined) {
+        $('#txtLastName').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtLastName').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
+    if ($('#txtEmail').val() == null || $('#txtEmail').val() == '' || $('#txtEmail').val() == undefined) {
+        $('#txtEmail').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtEmail').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($('#txtEmail').val())) {
+        $('#EmailDiv').fadeIn(500);
+        $('#txtEmail').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#EmailDiv').fadeOut(1000);
+            $('#txtEmail').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+    //if ($('#txtFullname').val() == null || $('#txtFullname').val() == '' || $('#txtFullname').val() == undefined) {
+    //    $('#txtFullname').addClass('highlightInvalid');
+    //    setTimeout(function () {
+    //        $('#txtFullname').removeClass('highlightInvalid');
+    //    }, 1000);
+    //    agreed = 0;
+    //    $('#chkAgreement').prop('checked', false);
+    //    return false;
+    //}
+    if ($('#txtBirthDate').val() == null || $('#txtBirthDate').val() == '' || $('#txtBirthDate').val() == undefined) {
+        $('#txtBirthDate').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtBirthDate').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#txtBirthDate').prop('checked', false);
+        return false;
+    }
+    if ($('#txtMobileNumber').val() == null || $('#txtMobileNumber').val() == '' || $('#txtMobileNumber').val() == undefined || document.getElementById('txtMobileNumber').value.length < 11) {
+        $('#txtMobileNumber').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtMobileNumber').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#txtMobileNumber').prop('checked', false);
+        return false;
+    }
+
+    if (moment($('#txtBirthDate').val()).format("YYYY-MM-DD") == "Invalid Date") {
+        $('#txtBirthDate').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtBirthDate').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#txtBirthDate').prop('checked', false);
+        return false;
+    }
+
+    $('#CustomerInformation').fadeOut(500, function () {
+        $('#SummaryInformation').fadeIn(200);
+        $('#ScheduleInformation').fadeOut(1000);
+        $('#ScheduleDivLoader').fadeOut(1000);
+
+        return true;
+    });
+});
+
 $('#btnReserveSlot').on('click', function () {
     if ($('#InstitutionSelect').select2('val') == 0 || $('#InstitutionSelect').select2('val') == null) {
         $('#InstitutionSelect').data('select2').$container.addClass('highlightInvalid');
@@ -844,15 +995,36 @@ $('#btnReserveSlot').on('click', function () {
         }, 1000);
         return false;
     }
-    if ($('#txtFullname').val() == null || $('#txtFullname').val() == '' || $('#txtFullname').val() == undefined) {
-        $('#txtFullname').addClass('highlightInvalid');
+    if ($('#txtCCANo').val() == null || $('#txtCCANo').val() == '' || $('#txtCCANo').val() == undefined) {
+        $('#txtCCANo').addClass('highlightInvalid');
         setTimeout(function () {
-            $('#txtFullname').removeClass('highlightInvalid');
+            $('#txtCCANo').removeClass('highlightInvalid');
         }, 1000);
         agreed = 0;
         $('#chkAgreement').prop('checked', false);
         return false;
     }
+
+    if ($('#txtFirstName').val() == null || $('#txtFirstName').val() == '' || $('#txtFirstName').val() == undefined) {
+        $('#txtFirstName').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtFirstName').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
+    if ($('#txtLastName').val() == null || $('#txtLastName').val() == '' || $('#txtLastName').val() == undefined) {
+        $('#txtLastName').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#txtLastName').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
     if ($('#txtEmail').val() == null || $('#txtEmail').val() == '' || $('#txtEmail').val() == undefined) {
         $('#txtEmail').addClass('highlightInvalid');
         setTimeout(function () {
@@ -909,16 +1081,7 @@ $('#btnReserveSlot').on('click', function () {
         agreed = 0;
         $('#txtBirthDate').prop('checked', false);
         return false;
-    }
-    if ($('#txtCityAddress').val() == null || $('#txtCityAddress').val() == '' || $('#txtCityAddress').val() == undefined) {
-        $('#txtCityAddress').addClass('highlightInvalid');
-        setTimeout(function () {
-            $('#txtCityAddress').removeClass('highlightInvalid');
-        }, 1000);
-        agreed = 0;
-        $('#txtCityAddress').prop('checked', false);
-        return false;
-    }
+    }  
 
     var txtStart = moment($('#txtBirthDate').val()).format('YYYY-MM-DD');
     var txtFinished = moment(Date.now()).format('YYYY-MM-DD');
