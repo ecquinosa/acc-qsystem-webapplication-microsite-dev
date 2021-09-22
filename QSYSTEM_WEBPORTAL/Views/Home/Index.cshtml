@@ -6,6 +6,10 @@
 <!-- Font Awesome -->
 <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <!--Select 2-->
 <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
 <!-- Datatable -->
@@ -70,235 +74,311 @@
                                             </div>
                                         </div>
 
-                                        <!--Schedule-->
-                                        <div id="ScheduleInformation" style="display: none; padding: 0px 10px 0px 10px; ">
-                                            <div class="row">
-                                                <div class="col-md-4 col-sm-4 col-xs-4"></div>
-                                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <div id="tabs">
+                                            <h3 id="tabSelected">Schedule</h3>
+                                            <ul class="nav nav-tabs">
+                                                <li id="tabSchedule" class="active"><a href="#">Schedule</a></li>
+                                                <li id="tabPersonalInformation"><a href="#">Personal Information</a></li>
+                                                <li id="tabSummary"><a href="#">Summary</a></li>
+                                            </ul>
+                                            <br>
+                                        </div>
 
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                            <!--Schedule-->
+                                            <div id="ScheduleInformation" style="display: none; padding: 0px 10px 0px 10px; ">                                              
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-4 col-xs-4"></div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4">
 
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Store: </span>
-                                                            <select class="form-control select2" id="InstitutionSelect" style="width: 100%"></select>
-                                                        </div>
-                                                    </div>
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
 
-                                                    <div class="row" style="margin-bottom: 10px;">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Branch: </span>
-                                                            <select class="form-control select2" id="BranchSelect" style="width: 100%" disabled></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" style="margin-bottom: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label" for="txtScheduledDate">Scheduled Date: </span>
-                                                            <input type="text" class="form-control" style="background-color: white;" id="txtScheduledDate" disabled readonly />
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Store: </span>
+                                                                <select class="form-control select2" id="InstitutionSelect" style="width: 100%"></select>
+                                                            </div>
                                                         </div>
 
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;">
-                                                        <div class="col-md-10 col-sm-10 col-xs-12">
-                                                            <button id="btnCheckSchedule" style="background-color: #E31B49; font-size: 13px; color: white; font-weight: bold;" class="btn" disabled><i class="fa fa-search"></i> CHECK SCHEDULE</button>
-                                                        </div>
-
-                                                    </div>
-                                                    <div id="ScheduleDivLoader" class="row" style="display: none;">
-                                                        <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right: -20px;">
-                                                            <label class="loaderSmall"></label>
-                                                        </div>
-                                                        @*<div class="col-md-10 col-sm-10 col-xs-10">
-                            <span style="font-size: 20px; font-weight: bold; opacity: 0.7;">Processing...</span>
-                        </div>*@
-                                                    </div>
-                                                    <div id="ScheduleDiv" style="display: none;">
                                                         <div class="row" style="margin-bottom: 10px;">
                                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                <span class="control-label">Schedule(s):<span style="color:#E31B49; font-style: italic;"> Note: <i class="fa fa-blind" style="font-weight: bold;"></i> Schedule for senior citizen.</span></span>
+                                                                <span class="control-label">Branch: </span>
+                                                                <select class="form-control select2" id="BranchSelect" style="width: 100%" disabled></select>
                                                             </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12" id="AvailableSchedDiv" style="display: none;">
-
-                                                                @*<button id="AvailableSched_" style="background-color: #E31B49; font-size: 12px; color: white; font-weight: bold;" class="btn" disabled>NO AVAILABLE SCHEDULE AT THE MOMENT</button>*@
-                                                            </div>
-
                                                         </div>
-                                                        <div id="AvailableSlotsDiv" style="display: none;">
-                                                            <div class="row" style="margin-bottom: 10px;">
-                                                                <div class="col-md-3 col-sm-3 col-xs-12">
-                                                                    <span class="control-label">Available Slot(s): </span>
-                                                                </div>
-                                                                <div class="col-md-5 col-sm-5 col-xs-12">
-                                                                    <button class="btn" style="font-size: 20px; padding: 5px; font-weight: bold; color: white; background-color: #E31B49; pointer-events: none;" disabled id="txtAvailableSlots">0</button>
-                                                                </div>
-                                                            </div>
+                                                        <div class="row" style="margin-bottom: 10px;">
 
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                                            <button id="btnSchedule_Next" class="btn btn-info">NEXT</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-xs-4"></div>
-
-                                            </div>
-                                        </div>
-
-                                        <!-- Customer -->
-                                        <div id="CustomerInformation" style="display: none; padding: 0px 10px 0px 10px; ">
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-6 col-xs-6" id="divider">
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">CCA Number: </span>
-                                                            <input type="text" class="form-control" id="txtCCANo" />
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">CIF: </span>
-                                                            <input type="text" class="form-control" id="txtCIF" />
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">First Name: </span>
-                                                            <input type="text" class="form-control" id="txtFirstName" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Middle Name: </span>
-                                                            <input type="text" class="form-control" id="txtMiddleName" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Last Name: </span>
-                                                            <input type="text" class="form-control" id="txtLastName" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
-
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Suffix: </span>
-                                                            <input type="text" class="form-control" id="txtSuffix" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Birth Date: </span>
-                                                            <input type="text" class="form-control" style="background-color: white;" id="txtBirthDate" readonly />
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                                            <span class="control-label">Email Address: </span>
-                                                            <input type="text" class="form-control" id="txtEmail" />
-                                                        </div>
-                                                        <div style="display: none;" id="EmailDiv">
                                                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                                                <span class="control-label" style="font-weight: bold;color: #E31B49;">Invalid Email address </span>
+                                                                <span class="control-label" for="txtScheduledDate">Scheduled Date: </span>
+                                                                <input type="text" class="form-control" style="background-color: white;" id="txtScheduledDate" disabled readonly />
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;">
+                                                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                                                <button id="btnCheckSchedule" style="background-color: #E31B49; font-size: 13px; color: white; font-weight: bold;" class="btn" disabled><i class="fa fa-search"></i> CHECK SCHEDULE</button>
+                                                            </div>
+
+                                                        </div>
+                                                        <div id="ScheduleDivLoader" class="row" style="display: none;">
+                                                            <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right: -20px;">
+                                                                <label class="loaderSmall"></label>
+                                                            </div>
+
+                                                        </div>
+                                                        <div id="ScheduleDiv" style="display: none;">
+                                                            <div class="row" style="margin-bottom: 10px;">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <span class="control-label">Schedule(s):<span style="color:#E31B49; font-style: italic;"> Note: <i class="fa fa-blind" style="font-weight: bold;"></i> Schedule for senior citizen.</span></span>
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 col-xs-12" id="AvailableSchedDiv" style="display: none;">
+
+                                                                    @*<button id="AvailableSched_" style="background-color: #E31B49; font-size: 12px; color: white; font-weight: bold;" class="btn" disabled>NO AVAILABLE SCHEDULE AT THE MOMENT</button>*@
+                                                                </div>
+
+                                                            </div>
+                                                            <div id="AvailableSlotsDiv" style="display: none;">
+                                                                <div class="row" style="margin-bottom: 10px;">
+                                                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                                                        <span class="control-label">Available Slot(s): </span>
+                                                                    </div>
+                                                                    <div class="col-md-5 col-sm-5 col-xs-12">
+                                                                        <button class="btn" style="font-size: 20px; padding: 5px; font-weight: bold; color: white; background-color: #E31B49; pointer-events: none;" disabled id="txtAvailableSlots">0</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                                <button id="btnSchedule_Next" class="btn btn-info">NEXT</button>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-4"></div>
 
+                                                </div>
+                                            </div>
 
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
-                                                        <div class="col-md-12 col-sm-12  col-xs-12">
-                                                            <span class="control-label">Mobile #: </span>
-                                                            <input type="text" class="form-control" id="txtMobileNumber" maxlength="11" onkeyup="" />
+                                            <!-- Customer -->
+                                            <div id="CustomerInformation" style="display: none; padding: 0px 10px 0px 10px; ">                                               
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-6" id="divider">
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">CCA Number: *</span>
+                                                                <input type="text" class="form-control" id="txtCCANo" maxlength="14" />
+                                                            </div>
+                                                            <div style="display: none;" id="CCANoDiv">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <span class="control-label" style="font-weight: bold;color: #E31B49;">CCA Number should be 14 characters</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">CIF: </span>
+                                                                <input type="text" class="form-control" id="txtCIF" maxlength="13" />
+                                                            </div>
+                                                            <div style="display: none;" id="CIFDiv">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <span class="control-label" style="font-weight: bold;color: #E31B49;">CIF should be 13 characters</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">First Name: *</span>
+                                                                <input type="text" class="form-control" id="txtFirstName" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Middle Name: </span>
+                                                                <input type="text" class="form-control" id="txtMiddleName" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Last Name: *</span>
+                                                                <input type="text" class="form-control" id="txtLastName" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px;  margin-top: 10px;">
+
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Suffix: </span>
+                                                                <input type="text" class="form-control" id="txtSuffix" />
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Birth Date: *</span>
+                                                                <input type="text" class="form-control" style="background-color: white;" id="txtBirthDate" readonly />
+                                                            </div>
 
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 autocomplete perf" style="max-height: 300px; overflow-x: hidden;">
-                                                            <span class="control-label">Transaction Type: </span>
-                                                            <select class="form-control select2" id="BranchSelect" style="width: 100%" disabled></select>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                <span class="control-label">Email Address: *</span>
+                                                                <input type="text" class="form-control" id="txtEmail" />
+                                                            </div>
+                                                            <div style="display: none;" id="EmailDiv">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <span class="control-label" style="font-weight: bold;color: #E31B49;">Invalid Email address </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12  col-xs-12">
+                                                                <span class="control-label">Mobile #: *</span>
+                                                                <input type="text" class="form-control" id="txtMobileNumber" maxlength="11" onkeyup="" />
+                                                            </div>
+                                                            <div style="display: none;" id="MobileNoDiv">
+                                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                                    <span class="control-label" style="font-weight: bold;color: #E31B49;">Invalid Mobile number</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 autocomplete perf" style="max-height: 300px; overflow-x: hidden;">
+                                                                <span class="control-label">Transaction Type: </span>
+                                                                <select class="form-control select2" id="BranchSelect" style="width: 100%" disabled></select>
+                                                            </div>
+                                                        </div>
+                                                        @*<div style="border: 1px solid #E31B49; margin: 20px 0px 20px 0px;"></div>*@
+
+                                                        @*<div class="row" style="margin-bottom: 10px; text-align: center;">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label class="loaderSmall"></label>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                 <span style="font-size: 20px; font-weight: bold; opacity: 0.7;">Processing...</span>
+                            </div>
+                        </div>*@
+
+                                                    </div>
+
+
+
+
+                                                </div>
+
+                                                <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                        <button id="btnCustomer_Back" class="btn btn-default">BACK</button>
+                                                        <button id="btnCustomer_Next" class="btn btn-info">NEXT</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Summary -->
+                                            <div id="SummaryInformation" style="display: none; padding: 0px 10px 0px 10px; ">
+                                             
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                                        <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Branch: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summBranch">BRANCH</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Schedule: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summSchedule">SCHEDULE</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">CCA Number: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summCCANo">CCA NUMBER</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">CIF: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summCIF">CIF</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Full Name: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summFullName">FULL NAME</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Birth Date: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summDOB">BIRTH DATE</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Email Address: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summEmail">EMAL</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Mobile Number: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summMobile">MOBILE</span>
+                                                            </div>
+                                                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                                                <span class="control-label">Transaction Type: </span>
+                                                            </div>
+                                                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                <span class="control-label" id="summTransactionType">TYPE</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    @*<div style="border: 1px solid #E31B49; margin: 20px 0px 20px 0px;"></div>*@
+                                                    <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                                                </div>
 
-                                                    @*<div class="row" style="margin-bottom: 10px; text-align: center;">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <label class="loaderSmall"></label>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                             <span style="font-size: 20px; font-weight: bold; opacity: 0.7;">Processing...</span>
-                        </div>
-                    </div>*@
+                                                <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                        <button id="btnSummary_Back" class="btn btn-default">BACK</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" style="margin-bottom: 15px; margin-top: 15px;">
+
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                                                        <input type="checkbox" id="chkAgreement" style=" font-weight: bold; display: inline-block;" />
+
+                                                        <span class="control-label" style="font-weight: bold; opacity: 0.7; font-size: 15px;"> By continuing, you agree to the <a href="#!" id="TermsAndCondition" style="color: #E31B49; text-decoration: underline;">terms and conditions</a> and <a href="#!" id="PrivacyPolicy" style="color: #E31B49; text-decoration: underline;">privacy policy</a> of using this service. </span>
+                                                    </div>
 
                                                 </div>
 
 
-
-
-                                            </div>
-
-                                            <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
-                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                                    <button id="btnCustomer_Back" class="btn btn-outline-dark">BACK</button>
-                                                    <button id="btnCustomer_Next" class="btn btn-info">NEXT</button>
+                                                <div class="row" style="margin-bottom: 10px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                        <button id="btnReserveSlot" style="background-color: #E31B49; font-size: 13px; color: white; font-weight: bold;" class="btn" disabled><i class="fa fa-check"></i> RESERVE SLOT</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- Summary -->
-                                        <div id="SummaryInformation" style="display: none; padding: 0px 10px 0px 10px; ">
-                                            <div class="row">
-                                                <div class="col-md-2 col-sm-2 col-xs-2"></div>
-                                                <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <div class="row" style="margin-bottom: 10px; margin-top: 10px;">
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <span class="control-label">Branch: </span>
-                                                        </div>
-                                                        <div class="col-md-10 col-sm-10 col-xs-10">
-                                                            <span class="control-label">AGUINALDO</span>
-                                                        </div>
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <span class="control-label">Schedule: </span>
-                                                        </div>
-                                                        <div class="col-md-10 col-sm-10 col-xs-10">
-                                                            <span class="control-label">August 01, 2021 09:00 - 10:00 AM</span>
-                                                        </div>
-                                                        <div class="col-md-2 col-sm-2 col-xs-2">
-                                                            <span class="control-label">Full Name: </span>
-                                                        </div>
-                                                        <div class="col-md-10 col-sm-10 col-xs-10">
-                                                            <span class="control-label">JUAN DELA CRUZ</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-2"></div>
-                                            </div>                                            
-
-                                            <div class="row" style="margin-bottom: 10px; margin-top: 30px;">
-                                                <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
-                                                    <button id="btnSummary_Back" class="btn btn-outline-dark">BACK</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
                                         <!--Confirmation-->
@@ -366,22 +446,22 @@
                                         <!---->
                                     </div>
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <span></span>
-                    </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <span></span>
                 </div>
             </div>
-
         </div>
+
     </div>
+</div>
 
 </div>
 

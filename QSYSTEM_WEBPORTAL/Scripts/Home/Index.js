@@ -250,9 +250,9 @@ $(document).ready(function () {
     else {
         $('.select2').select2();
         $("#MainDiv").fadeIn(1000);
-
+        $("#tabs").fadeOut(50);
         $("#PageLoading").fadeIn(1000);
-
+        
         $.ajax({
             url: "/Home/GetInstitutionList",
             type: "POST",
@@ -261,11 +261,12 @@ $(document).ready(function () {
                 let result;
                 result = $.parseJSON(res);
                 if (result.resultCode == 200) {
-                    $("#PageLoading").fadeOut(200, function () { 
+                    $("#PageLoading").fadeOut(200, function () {
+                        $("#tabs").fadeIn(1000);
                         $("#ScheduleInformation").fadeIn(1000);
                         $("#CustomerInformation").fadeOut(1000);
                         $("#SummaryInformation").fadeOut(1000);
-                        $("#AvailableSchedDiv").fadeOut(1000);
+                        $("#AvailableSchedDiv").fadeOut(1000);                        
                         document.getElementById("AvailableSchedDiv").innerHTML = "<button + " + buttonCheckSchedAttrib + "disabled>" + "NO AVAILABLE SLOTS AT THE MOMENT" + "</button>";
                     });
                     $('#chkAgreement').prop('checked', false);
@@ -329,7 +330,7 @@ $(document).ready(function () {
                             $("#ScheduleInformation").fadeIn(1000);
                             $("#CustomerInformation").fadeOut(1000);
                             $("#SummaryInformation").fadeOut(1000);
-                            $("#AvailableSchedDiv").fadeOut(1000);
+                            $("#AvailableSchedDiv").fadeOut(1000);                            
                             document.getElementById("AvailableSchedDiv").innerHTML = "<button + " + buttonCheckSchedAttrib + "disabled>" + "NO AVAILABLE SLOTS AT THE MOMENT" + "</button>";
                         });
                         //$('#ConfirmationLoader').fadeOut(1000, function () {
@@ -439,6 +440,7 @@ $('#txtScheduledDate').daterangepicker({
     }
 );
 var scheduleID = null;
+var scheduleDateAndTime = null;
 $('#btnCheckSchedule').on('click', function () {
 
     $('#ScheduleDiv').fadeOut(500, function () {
@@ -484,18 +486,18 @@ $('#btnCheckSchedule').on('click', function () {
                                     //console.log(StartDate < datenow);
                                     if (value.isSenior == true) {
                                         if (StartDate == datenow && (StartTime < datetimenow && EndTime < datetimenow)) {
-                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetails(" + '"' + value.guid + '"' + ")' + " + buttonCheckSchedAttrib + "disabled><i class='fa fa-blind' style='color: white; font-weight: bold;'></i>" + " " + StartTime + " - " + EndTime + "</button>";
+                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetailsv2(" + '"' + value.guid + '"' + "," + '"' + value.date + '"' + "," + '"' + value.startTime + '"' + "," + '"' + value.endTime + '"' + ")' + " + buttonCheckSchedAttrib + "disabled><i class='fa fa-blind' style='color: white; font-weight: bold;'></i>" + " " + StartTime + " - " + EndTime + "</button>";
                                         }
                                         else {
-                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetails(" + '"' + value.guid + '"' + ")' + " + buttonCheckSchedAttrib + "><i class='fa fa-blind' style='color: white; font-weight: bold;'></i>" + " " + StartTime + " - " + EndTime + "</button>";
+                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetailsv2(" + '"' + value.guid + '"' + "," + '"' + value.date + '"' + "," + '"' + value.startTime + '"' + "," + '"' + value.endTime + '"' + ")' + " + buttonCheckSchedAttrib + "><i class='fa fa-blind' style='color: white; font-weight: bold;'></i>" + " " + StartTime + " - " + EndTime + "</button>";
                                         }
                                     }
                                     else {
                                         if (StartDate == datenow && (StartTime < datetimenow && EndTime < datetimenow)) {
-                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetails(" + '"' + value.guid + '"' + ")' + " + buttonCheckSchedAttrib + "disabled>" + StartTime + " - " + EndTime + "</button>";
+                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetailsv2(" + '"' + value.guid + '"' + "," + '"' + value.date + '"' + "," + '"' + value.startTime + '"' + "," + '"' + value.endTime + '"' + ")' + " + buttonCheckSchedAttrib + "disabled>" + StartTime + " - " + EndTime + "</button>";
                                         }
                                         else {
-                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetails(" + '"' + value.guid + '"' + ")' + " + buttonCheckSchedAttrib + ">" + StartTime + " - " + EndTime + "</button>";
+                                            document.getElementById("AvailableSchedDiv").innerHTML += "<button id =" + '"' + value.guid + '"' + " onClick='ScheduleDetailsv2(" + '"' + value.guid + '"' + "," + '"' + value.date + '"' + "," + '"' + value.startTime + '"' + "," + '"' + value.endTime + '"' + ")' + " + buttonCheckSchedAttrib + ">" + StartTime + " - " + EndTime + "</button>";
                                         }
                                     }
 
@@ -572,9 +574,67 @@ $('#btnCheckSchedule').on('click', function () {
     });
 });
 
-function ScheduleDetails(id) {
+function ScheduleDetailsv2(id, schedDate, schedStartTime, schedEndTime) {
     var selectedElement = $(".select_v2");
     scheduleID = id;
+    scheduleDateAndTime = moment(schedDate).format("MMMM DD, YYYY") + ' ' + moment(schedStartTime).format("HH:mm") + ' - ' + moment(schedEndTime).format("HH:mm")
+    document.getElementById(id).style.backgroundColor = "darkseagreen";
+    document.getElementById(id).classList.add("select_v2");
+
+    selectedElement.each(function () {
+        document.getElementById(this.id).style.backgroundColor = "#E31B49";
+        document.getElementById(this.id).classList.remove("select_v2");
+    });
+
+
+    $.ajax({
+        url: "/Home/GetRemainingSlotCount",
+        type: "POST",
+        data: {
+            scheduleCode: id
+        },
+        success: function (finalReturn) {
+            let res = finalReturn.data;
+            let result;
+            result = $.parseJSON(res);
+            if (result.resultCode == 200) {
+                if ($('#' + id).css('background-color') == "rgb(227, 27, 73)") {
+                    $('#AvailableSlotsDiv').fadeOut(200);
+                    document.getElementById('txtAvailableSlots').innerHTML = 0;
+                }
+                else {
+                    $('#AvailableSlotsDiv').fadeIn(200);
+                    document.getElementById('txtAvailableSlots').innerHTML = result.data;
+                }
+
+            }
+            else {
+                swal({
+                    title: "Invalid Operation",
+                    type: "error",
+                    html: "<span style='font-size: 15px; font-weight: bold; color: #E31B49'>" + result.resultMessage + "</span>",
+                    showCancelButton: false,
+                    confirmButtonColor: '#E31B49',
+                    cancelButtonColor: '#E31B49',
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'NO',
+                    confirmButtonClass: 'btn btn-danger',
+                    cancelButtonClass: 'btn btn-danger',
+                    //closeOnConfirm: false,
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.value) {
+                        return false;
+                    }
+                });
+            }
+        }
+    });
+}
+
+function ScheduleDetails(id) {
+    var selectedElement = $(".select_v2");
+    scheduleID = id;    
     document.getElementById(id).style.backgroundColor = "darkseagreen";
     document.getElementById(id).classList.add("select_v2");
 
@@ -653,6 +713,12 @@ var Decimal = {
     }
 };
 $('#txtMobileNumber').on('keydown', function (event) {
+    isNumberKey(event);
+});
+$('#txtCCANo').on('keydown', function (event) {
+    isNumberKey(event);
+});
+$('#txtCIF').on('keydown', function (event) {
     isNumberKey(event);
 });
 var dateObject;
@@ -831,6 +897,25 @@ $('#chkAgreement').on('click', function () {
     }
 });
 
+function tabDispo(tabIndex) {
+    if (tabIndex == 0) {
+        $('#tabSchedule').prop('class', "active");
+        document.getElementById('tabSelected').innerText = 'Schedule';
+    } else $('#tabSchedule').prop('class', "");
+
+    if (tabIndex == 1) {
+        $('#tabPersonalInformation').prop('class', "active");
+        document.getElementById('tabSelected').innerText = 'Personal Information';
+    } else $('#tabPersonalInformation').prop('class', "");
+
+    if (tabIndex == 2) {
+        $('#tabSummary').prop('class', "active");
+        document.getElementById('tabSelected').innerText = 'Summary';
+    } else $('#tabSummary').prop('class', "");
+
+    return true;
+}
+
 $('#btnSchedule_Next').on('click', function () {
     if ($('#InstitutionSelect').select2('val') == 0 || $('#InstitutionSelect').select2('val') == null) {
         $('#InstitutionSelect').data('select2').$container.addClass('highlightInvalid');
@@ -849,6 +934,18 @@ $('#btnSchedule_Next').on('click', function () {
         return false;
     }
 
+    if (scheduleID == null) {
+        $('#AvailableSchedDiv').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#AvailableSchedDiv').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
+        $('#AvailableSchedDiv').prop('checked', false);
+        return false;
+    }
+
+    tabDispo(1);
+
     $('#ScheduleInformation').fadeOut(500, function () {
         $('#CustomerInformation').fadeIn(200);
         $('#SummaryInformation').fadeOut(1000);
@@ -859,6 +956,8 @@ $('#btnSchedule_Next').on('click', function () {
 });
 
 $('#btnCustomer_Back').on('click', function () {
+    tabDispo(0);
+
     $('#CustomerInformation').fadeOut(500, function () {
         $('#ScheduleInformation').fadeIn(200);
         $('#SummaryInformation').fadeOut(1000);
@@ -869,6 +968,8 @@ $('#btnCustomer_Back').on('click', function () {
 });
 
 $('#btnSummary_Back').on('click', function () {
+    tabDispo(1);
+
     $('#SummaryInformation').fadeOut(500, function () {
         $('#CustomerInformation').fadeIn(200);
         $('#ScheduleInformation').fadeOut(1000);
@@ -878,16 +979,35 @@ $('#btnSummary_Back').on('click', function () {
     });
 });
 
-
-
 $('#btnCustomer_Next').on('click', function () {
     if ($('#txtCCANo').val() == null || $('#txtCCANo').val() == '' || $('#txtCCANo').val() == undefined) {
         $('#txtCCANo').addClass('highlightInvalid');
         setTimeout(function () {
             $('#txtCCANo').removeClass('highlightInvalid');
         }, 1000);
+        agreed = 0;       
+        return false;
+    }
+
+    if (document.getElementById('txtCCANo').value.length < 14) {
+        $('#CCANoDiv').fadeIn(500);
+        $('#txtCCANo').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#CCANoDiv').fadeOut(1000);
+            $('#txtCCANo').removeClass('highlightInvalid');
+        }, 1000);
         agreed = 0;
-        $('#chkAgreement').prop('checked', false);
+        return false;
+    }
+
+    if ($('#txtCIF').val() != '' && document.getElementById('txtCIF').value.length < 13) {
+        $('#CIFDiv').fadeIn(500);
+        $('#txtCIF').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#CIFDiv').fadeOut(1000);
+            $('#txtCIF').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;
         return false;
     }
 
@@ -896,8 +1016,7 @@ $('#btnCustomer_Next').on('click', function () {
         setTimeout(function () {
             $('#txtFirstName').removeClass('highlightInvalid');
         }, 1000);
-        agreed = 0;
-        $('#chkAgreement').prop('checked', false);
+        agreed = 0;       
         return false;
     }
 
@@ -931,15 +1050,7 @@ $('#btnCustomer_Next').on('click', function () {
         $('#chkAgreement').prop('checked', false);
         return false;
     }
-    //if ($('#txtFullname').val() == null || $('#txtFullname').val() == '' || $('#txtFullname').val() == undefined) {
-    //    $('#txtFullname').addClass('highlightInvalid');
-    //    setTimeout(function () {
-    //        $('#txtFullname').removeClass('highlightInvalid');
-    //    }, 1000);
-    //    agreed = 0;
-    //    $('#chkAgreement').prop('checked', false);
-    //    return false;
-    //}
+
     if ($('#txtBirthDate').val() == null || $('#txtBirthDate').val() == '' || $('#txtBirthDate').val() == undefined) {
         $('#txtBirthDate').addClass('highlightInvalid');
         setTimeout(function () {
@@ -959,6 +1070,17 @@ $('#btnCustomer_Next').on('click', function () {
         return false;
     }
 
+    if ($('#txtMobileNumber').val().substr(0,2) != '09') {
+        $('#MobileNoDiv').fadeIn(500);
+        $('#txtMobileNumber').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#MobileNoDiv').fadeOut(1000);
+            $('#txtMobileNumber').removeClass('highlightInvalid');
+        }, 1000);
+        agreed = 0;       
+        return false;
+    }
+
     if (moment($('#txtBirthDate').val()).format("YYYY-MM-DD") == "Invalid Date") {
         $('#txtBirthDate').addClass('highlightInvalid');
         setTimeout(function () {
@@ -968,6 +1090,45 @@ $('#btnCustomer_Next').on('click', function () {
         $('#txtBirthDate').prop('checked', false);
         return false;
     }
+
+    var txtStart = moment($('#txtBirthDate').val()).format('YYYY-MM-DD');
+    var txtFinished = moment(Date.now()).format('YYYY-MM-DD');
+
+    var end = moment(new Date(txtFinished));
+    var duration = moment.duration(end.diff(txtStart));
+    if ((Decimal.convert(duration.asYears(), 0) < 18)) {
+        swal({
+            title: "Invalid Operation",
+            type: "error",
+            html: "<span style='font-size: 15px; font-weight: bold; color: #E31B49'>Only 18 years old and above are allowed.</span>",
+            showCancelButton: false,
+            confirmButtonColor: '#E31B49',
+            cancelButtonColor: '#E31B49',
+            confirmButtonText: 'OK',
+            cancelButtonText: 'NO',
+            confirmButtonClass: 'btn btn-danger',
+            cancelButtonClass: 'btn btn-danger',
+            //closeOnConfirm: false,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.value) {
+                $('#txtBirthDate').val('');
+            }
+        });
+        return false;
+    }
+
+    document.getElementById('summBranch').innerText = $('#BranchSelect option:selected').text();
+    document.getElementById('summSchedule').innerText = scheduleDateAndTime;
+    document.getElementById('summCCANo').innerText = $('#txtCCANo').val();
+    document.getElementById('summCIF').innerText = $('#txtCIF').val();
+    document.getElementById('summFullName').innerText = $('#txtFirstName').val() + ' ' + $('#txtMiddleName').val() + ' ' + $('#txtLastName').val() + $('#txtSuffix').val();
+    document.getElementById('summDOB').innerText = $('#txtBirthDate').val();
+    document.getElementById('summEmail').innerText = $('#txtEmail').val();
+    document.getElementById('summMobile').innerText = $('#txtMobileNumber').val();
+    document.getElementById('summTransactionType').innerText = 'ATM';
+
+    tabDispo(2);
 
     $('#CustomerInformation').fadeOut(500, function () {
         $('#SummaryInformation').fadeIn(200);
@@ -995,13 +1156,24 @@ $('#btnReserveSlot').on('click', function () {
         }, 1000);
         return false;
     }
-    if ($('#txtCCANo').val() == null || $('#txtCCANo').val() == '' || $('#txtCCANo').val() == undefined) {
+
+    if ($('#txtCCANo').val() == null || $('#txtCCANo').val() == '' || $('#txtCCANo').val() == undefined || document.getElementById('txtCCANo').value.length < 14) {
         $('#txtCCANo').addClass('highlightInvalid');
         setTimeout(function () {
             $('#txtCCANo').removeClass('highlightInvalid');
         }, 1000);
+        agreed = 0;        
+        return false;
+    }
+
+    if ($('#txtCIF').val() != '' && document.getElementById('txtCIF').value.length < 13) {
+        $('#CIFDiv').fadeIn(500);
+        $('#txtCIF').addClass('highlightInvalid');
+        setTimeout(function () {
+            $('#CIFDiv').fadeOut(1000);
+            $('#txtCIF').removeClass('highlightInvalid');
+        }, 1000);
         agreed = 0;
-        $('#chkAgreement').prop('checked', false);
         return false;
     }
 
@@ -1045,13 +1217,14 @@ $('#btnReserveSlot').on('click', function () {
         $('#chkAgreement').prop('checked', false);
         return false;
     }
-    if ($('#txtFullname').val() == null || $('#txtFullname').val() == '' || $('#txtFullname').val() == undefined) {
-        $('#txtFullname').addClass('highlightInvalid');
+    if (document.getElementById('txtCCANo').value.length < 14) {
+        $('#CCANoDiv').fadeIn(500);
+        $('#txtCCANo').addClass('highlightInvalid');
         setTimeout(function () {
-            $('#txtFullname').removeClass('highlightInvalid');
+            $('#CCANoDiv').fadeOut(1000);
+            $('#txtCCANo').removeClass('highlightInvalid');
         }, 1000);
-        agreed = 0;
-        $('#chkAgreement').prop('checked', false);
+        agreed = 0;      
         return false;
     }
     if ($('#txtBirthDate').val() == null || $('#txtBirthDate').val() == '' || $('#txtBirthDate').val() == undefined) {
@@ -1180,7 +1353,7 @@ $('#btnReserveSlot').on('click', function () {
 
 });
 
-function ReserveSlot(scheduleCode, fullName, cityaddress, birthdate, mobileNumber, email) {
+function ReserveSlot(scheduleCode, ccaNo, cif, firstName, middleName, lastName, suffix, fullName, cityaddress, birthdate, mobileNumber, email) {
     //alert(cityaddress);
     //return false;
     $.ajax({
@@ -1188,8 +1361,12 @@ function ReserveSlot(scheduleCode, fullName, cityaddress, birthdate, mobileNumbe
         type: "POST",
         data: {
             scheduleCode: scheduleCode,
-            fullName: fullName,
-            cityaddress: cityaddress,
+            ccaNo: ccaNo,
+            cif: cif,
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            suffix: suffix,            
             birthdate: birthdate,
             mobileNumber: mobileNumber,
             email: email
@@ -1282,3 +1459,15 @@ function ReserveSlot(scheduleCode, fullName, cityaddress, birthdate, mobileNumbe
     //        });
     //    }
     //});
+
+$('#tabSchedule').on('click', function () {
+    $("#btnCustomer_Back").trigger("click");
+});
+
+$('#tabPersonalInformation').on('click', function () {
+    $("#btnSchedule_Next").trigger("click");
+});
+
+$('#tabSummary').on('click', function () {
+    $("#btnCustomer_Next").trigger("click");
+});
